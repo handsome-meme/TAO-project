@@ -1,0 +1,94 @@
+FROM debian:stretch
+
+MAINTAINER jinjiao@tencent.com
+
+# use tencent apt sources
+RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak && \
+        echo "deb [trusted=yes] http://mirrors.cloud.tencent.com/debian stretch main non-free contrib" >> /etc/apt/sources.list && \
+        echo "deb [trusted=yes] http://mirrors.cloud.tencent.com/debian stretch-updates main non-free contrib"  >> /etc/apt/sources.list && \
+        echo "deb-src [trusted=yes] http://mirrors.cloud.tencent.com/debian stretch main non-free contrib"  >> /etc/apt/sources.list && \
+        echo "deb-src [trusted=yes] http://mirrors.cloud.tencent.com/debian stretch-updates main non-free contrib"  >> /etc/apt/sources.list && \
+        echo "deb [trusted=yes] http://mirrors.cloud.tencent.com/debian-security/ stretch/updates main contrib non-free"  >> /etc/apt/sources.list && \
+        echo "deb-src [trusted=yes] http://mirrors.cloud.tencent.com/debian-security/ stretch/updates main contrib non-free"  >> /etc/apt/sources.list && \
+        echo "deb [trusted=yes] http://mirrors.cloud.tencent.com/debian stretch-backports main contrib non-free" >> /etc/apt/sources.list
+
+## Make apt-get non-interactive
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Shanghai
+
+WORKDIR /home/buildsde/
+
+ENV SDE=/home/buildsde/bf-sde-9.7.1 \
+    SDE_INSTALL=$SDE/install \
+    BSP=$SDE/bf-reference-bsp-9.7.1 \
+    BSP_INSTALL=$SDE_INSTALL \
+    PATH=$SDE_INSTALL/bin:$PATH \
+    USER=root \
+    LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8
+
+# install tool
+RUN apt-get update && apt-get install -y \
+	apt-utils \
+	lrzsz \
+	sudo \
+	vim \
+	# install python
+	python \
+	python-pip \
+	python3 \
+	python3-pip \
+	# install dh tool
+	dh-make \
+	dh-exec \
+        libnuma-dev \
+	dh-autoreconf \
+	wget
+
+
+RUN echo "export SDE=/home/buildsde/bf-sde-9.7.1" >> ~/.bashrc \
+	&& echo "export SDE_INSTALL=/home/buildsde/bf-sde-9.7.1/install" >> ~/.bashrc \
+	&& echo "export BSP=/home/buildsde/bf-reference-bsp-9.7.1" >> ~/.bashrc \
+	&& echo "export BSP_INSTALL=$SDE_INSTALL" >> ~/.bashrc \
+	&& echo "export PATH=$SDE_INSTALL/bin:$PATH" >> ~/.bashrc \
+	&& echo "export USER=root" >> ~/.bashrc
+
+RUN export REPO_USER=g_ntb_public \
+    && export REPO_TOKEN=f9db1b96790711ecbf506225058ed3dc \
+    && export REPO_URL=https://mirrors.tencent.com/repository/generic/ntb/3rd/ \
+    && wget -P /home/buildsde/ --user $REPO_USER --password $REPO_TOKEN $REPO_URL/bf-sde-9.7.1.tgz \
+    && wget -P /home/buildsde/ --user $REPO_USER --password $REPO_TOKEN $REPO_URL/onl-bf-bsp.1.zip \
+    && wget -P /home/buildsde/ --user $REPO_USER --password $REPO_TOKEN $REPO_URL/modules.tar.gz
+
+RUN set -x; export
+
+COPY ["shutil.py", "/usr/lib/python3.5/shutil.py"]
+RUN mkdir -p /root/.pip/
+COPY ["pip.conf",  "/root/.pip/"]
+
+RUN pip3 install scapy
+
+# install sde dependency
+RUN tar -xf bf-sde-9.7.1.tgz && rm bf-sde-9.7.1.tgz \
+    && $SDE/p4studio/install-p4studio-dependencies.sh
+
+# build sde
+COPY ["ntb.yaml",  "$SDE/p4studio/profiles/"]
+
+RUN export SDE=/home/buildsde/bf-sde-9.7.1 \
+    && export SDE_INSTALL=/home/buildsde/bf-sde-9.7.1/install \
+    && export PATH=$SDE_INSTALL/bin:$PATH \
+    && export USER=root \
+    && cd $SDE && ./p4studio/p4studio profile apply $SDE/p4studio/profiles/ntb.yaml \
+    && cd /home/buildsde/ && tar -xf modules.tar.gz  && rm modules.tar.gz && mv modules $SDE_INSTALL/lib/ \
+    && unzip onl-bf-bsp.1.zip && rm onl-bf-bsp.1.zip && ls && cd onl-bf-bsp/bf-platforms \
+    && export BSP_INSTALL=$SDE_INSTALL \
+    && chmod +x ./configure \
+    && ./configure --prefix=$BSP_INSTALL --enable-thrift \
+    && make && make install \
+    && cd /home/buildsde/ && rm -rf onl-bf-bsp/
+
+# clean temp files
+RUN cd $SDE && ./p4studio/p4studio clean -y
+RUN apt-get clean -y; apt-get autoclean -y; apt-get autoremove -y
+

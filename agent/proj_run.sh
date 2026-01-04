@@ -1,0 +1,1 @@
+./zdw_cntl --sde-dir=$SDE_INSTALL --p4-conf=${SDE}/install/share/p4/targets/tofino/shc_real_time_sketch.conf --bfshell

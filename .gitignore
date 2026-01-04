@@ -1,0 +1,15 @@
+**/build
+**/2a_eflow_p.txt
+**/202207251400_re.txt
+**/insert_time_result.txt
+**/.vscode
+**/dist
+**/*egg-info
+**/*pb2*.py
+**/*.pyc
+**/*.log*
+**/*.o
+**/*.a
+**/*.deb
+*.whl
+__pycache__

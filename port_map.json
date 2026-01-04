@@ -1,0 +1,163 @@
+{
+  "port_maps":[
+  {
+    "port_id": 1,
+    "hostif_name": "Eth100GE1",
+    "fec":"rs"
+  },
+  {
+    "port_id": 2,
+    "hostif_name": "Eth100GE2",
+    "fec":"rs"
+  },
+  {
+    "port_id": 3,
+    "hostif_name": "Eth100GE3",
+    "fec":"rs"
+  },
+  {
+    "port_id": 4,
+    "hostif_name": "Eth100GE4",
+    "fec":"rs"
+  },
+  {
+    "port_id": 5,
+    "hostif_name": "Eth100GE5",
+    "fec":"rs"
+  },
+  {
+    "port_id": 6,
+    "hostif_name": "Eth100GE6",
+    "fec":"rs"
+  },
+  {
+    "port_id": 7,
+    "hostif_name": "Eth100GE7",
+    "fec":"rs"
+  },
+  {
+    "port_id": 8,
+    "hostif_name": "Eth100GE8",
+    "fec":"rs"
+  },
+  {
+    "port_id": 25,
+    "hostif_name": "Eth100GE25",
+    "fec":"rs"
+  },
+  {
+    "port_id": 26,
+    "hostif_name": "Eth100GE26",
+    "fec":"rs"
+  },
+  {
+    "port_id": 27,
+    "hostif_name": "Eth100GE27",
+    "fec":"rs"
+  },
+  {
+    "port_id": 28,
+    "hostif_name": "Eth100GE28",
+    "fec":"rs"
+  },
+  {
+    "port_id": 29,
+    "hostif_name": "Eth100GE29",
+    "fec":"rs"
+  },
+  {
+    "port_id": 30,
+    "hostif_name": "Eth100GE30",
+    "fec":"rs"
+  },
+  {
+    "port_id": 31,
+    "hostif_name": "Eth100GE31",
+    "fec":"rs"
+  },
+  {
+    "port_id": 32,
+    "hostif_name": "Eth100GE32",
+    "fec":"rs"
+  },
+  {
+    "port_id": 9,
+    "hostif_name": "Eth100GE9",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 10,
+    "hostif_name": "Eth100GE10",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 11,
+    "hostif_name": "Eth100GE11",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 12,
+    "hostif_name": "Eth100GE12",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 13,
+    "hostif_name": "Eth100GE13",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 14,
+    "hostif_name": "Eth100GE14",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 15,
+    "hostif_name": "Eth100GE15",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 16,
+    "hostif_name": "Eth100GE16",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 17,
+    "hostif_name": "Eth100GE17",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 18,
+    "hostif_name": "Eth100GE18",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 19,
+    "hostif_name": "Eth100GE19",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 20,
+    "hostif_name": "Eth100GE20",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 21,
+    "hostif_name": "Eth100GE21",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 22,
+    "hostif_name": "Eth100GE22",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 23,
+    "hostif_name": "Eth100GE23",
+    "lpbk":"mac"
+  },
+  {
+    "port_id": 24,
+    "hostif_name": "Eth100GE24",
+    "lpbk":"mac"
+  }]
+}
